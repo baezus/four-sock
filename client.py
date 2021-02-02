@@ -2,26 +2,33 @@ import socket
 import sys
 import argparse 
 
-parser = argparse.ArgumentParser()
-parser.add_argument("-p port",
+parser = argparse.ArgumentParser(description="A network hashing server implementing sha1, sha256, sha512, and md5.")
+parser.add_argument("-port",
+                    metavar="port",
+                    type=int,
                     action="store",
-                    default="2345")
+                    default="2345",
+                    help="The port to access.")
 parser.add_argument("ip",
                     action="store",
-                    default="127.0.0.1")
+                    default="127.0.0.1",
+                    help="The IP domain to network on.")
 parser.add_argument('algorithm', 
-                    action="store", 
-                    choices=["sha1", "sha256", "sha512", "md5"], 
+                    action="store",
+                    type=str, 
+                    choices=["sha1", "sha256", "sha512", "md5"],
+                    help="The hashing algorithm to use." 
                     )
 parser.add_argument('files',
                     action="store",
-                    nargs=argparse.REMAINDER
+                    nargs=argparse.REMAINDER,
+                    help="The files to be hashed."
                     )
 args = parser.parse_args()
 
 s = socket.socket()
 host = socket.gethostname()
-port = 2345
+port = args.port
 ip = socket.gethostbyname(host)
 
 s.connect((host, port))
