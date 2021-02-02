@@ -19,15 +19,14 @@ while True:
     filename="example.txt"
     f = open(filename, 'rb')
     l = f.read(1024)
-    while (l):
+    # while (l):
         
-        conn.send(l)
-        print('Sent ', repr(l))
-        l = f.read(1024)
+    #     conn.send(l)
+    #     print('Sent ', repr(l))
+    #     l = f.read(1024)
     sha256.update(l)
     conn.send(sha256.hexdigest().encode())
     f.close()
 
     print(f'Done sending {filename}.')
-    conn.send('Thank you for connecting!'.encode())
     conn.close()
