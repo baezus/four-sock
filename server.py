@@ -15,7 +15,7 @@ while True:
     conn, addr = s.accept()
     print(f'Got connection from {addr}')
     data = conn.recv(1024)
-    print('Server received', repr(data))
+    print('Server received', data.decode())
     filename="example.txt"
     f = open(filename, 'rb')
     l = f.read(1024)

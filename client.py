@@ -34,7 +34,7 @@ host = socket.getfqdn(args.ip)
 port = args.port
 
 s.connect((host, port))
-s.send(f"{args.port} {args.ip} {args.algorithm} {args.files}".encode())
+s.send(f"{args.algorithm} {args.files}".encode())
 
 with open('clientside_file', 'wb') as f:
     print(f'Connecting to {args.ip}:{port}')
