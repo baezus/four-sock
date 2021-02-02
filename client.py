@@ -1,5 +1,23 @@
 import socket
 import sys
+import argparse 
+
+parser = argparse.ArgumentParser()
+parser.add_argument("-p port",
+                    action="store",
+                    default="2345")
+parser.add_argument("ip",
+                    action="store",
+                    default="127.0.0.1")
+parser.add_argument('algorithm', 
+                    action="store", 
+                    choices=["sha1", "sha256", "sha512", "md5"], 
+                    )
+parser.add_argument('files',
+                    action="store",
+                    nargs=argparse.REMAINDER
+                    )
+args = parser.parse_args()
 
 s = socket.socket()
 host = socket.gethostname()
@@ -12,18 +30,14 @@ s.send('Hello server!'.encode())
 with open('clientside_file', 'wb') as f:
     print(f'Connecting to {ip}:{port}')
     while True:
-        # print('receiving data from server...')
         data = s.recv(1024)
-        # print('data=%s', (data))
         if not data:
             break
-        #write data to a file
         f.write(data)
 
 f.close()
-# print('Successfully got the file.')
 s.close()
-# print('connection closed.')
 
 with open('clientside_file', 'r') as fin:
   print(fin.read())
+print(vars(args))
