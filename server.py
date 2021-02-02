@@ -1,9 +1,9 @@
 import socket #import socket module
 import hashlib
 
-sha256 = hashlib.sha256()
+sha1 = hashlib.sha1()
 
-port = 2346
+port = 2345
 s = socket.socket()
 host = socket.gethostname()
 s.bind((host, port))
@@ -21,9 +21,10 @@ while True:
     l = f.read(1024)
     while (l):
         l = f.read(1024)
-    sha256.update(l)
-    conn.send(sha256.hexdigest().encode())
     f.close()
-
+    sha1.update(l)
+    conn.send(sha1.hexdigest().encode())
+    conn.send('     '.encode())
+    conn.send(filename.encode())
     print(f'Done sending {filename}.')
     conn.close()
