@@ -2,7 +2,7 @@ import socket
 
 s = socket.socket()
 host = socket.gethostname()
-port = 2345
+port = 2346
 
 s.connect((host, port))
 s.send('Hello server!'.encode())
