@@ -14,13 +14,15 @@ parser.add_argument("ip",
                     action="store",
                     default="127.0.1.1",
                     help="The IP domain to network on.")
-parser.add_argument('algorithm', 
+parser.add_argument('algorithm',
+                    metavar="algorithm",
                     action="store",
                     type=str, 
                     choices=["sha1", "sha256", "sha512", "md5"],
                     help="The hashing algorithm to use." 
                     )
 parser.add_argument('files',
+                    metavar="files",
                     action="store",
                     nargs=argparse.REMAINDER,
                     help="The files to be hashed."
@@ -32,7 +34,7 @@ host = socket.getfqdn(args.ip)
 port = args.port
 
 s.connect((host, port))
-s.send('Hello server!'.encode())
+s.send(f"{args.port} {args.ip} {args.algorithm} {args.files}".encode())
 
 with open('clientside_file', 'wb') as f:
     print(f'Connecting to {args.ip}:{port}')
