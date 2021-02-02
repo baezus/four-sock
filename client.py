@@ -10,8 +10,9 @@ parser.add_argument("-port",
                     default="2345",
                     help="The port to access.")
 parser.add_argument("ip",
+                    metavar="ip",
                     action="store",
-                    default="127.0.0.1",
+                    default="127.0.1.1",
                     help="The IP domain to network on.")
 parser.add_argument('algorithm', 
                     action="store",
@@ -27,15 +28,14 @@ parser.add_argument('files',
 args = parser.parse_args()
 
 s = socket.socket()
-host = socket.gethostname()
+host = socket.getfqdn(args.ip)
 port = args.port
-ip = socket.gethostbyname(host)
 
 s.connect((host, port))
 s.send('Hello server!'.encode())
 
 with open('clientside_file', 'wb') as f:
-    print(f'Connecting to {ip}:{port}')
+    print(f'Connecting to {args.ip}:{port}')
     while True:
         data = s.recv(1024)
         if not data:
@@ -47,4 +47,4 @@ s.close()
 
 with open('clientside_file', 'r') as fin:
   print(fin.read())
-print(vars(args))
+# print(vars(args))
