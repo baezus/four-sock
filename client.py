@@ -1,7 +1,9 @@
 import socket
 import sys
-import argparse 
+import argparse
+import pickle 
 
+#Creating CLI options and arguments
 parser = argparse.ArgumentParser(description="A network hashing server implementing sha1, sha256, sha512, and md5.")
 parser.add_argument("-port",
                     metavar="port",
@@ -29,12 +31,23 @@ parser.add_argument('files',
                     )
 args = parser.parse_args()
 
+#Getting the socket up and running
 s = socket.socket()
 host = socket.getfqdn(args.ip)
 port = args.port
-
 s.connect((host, port))
-s.send(f"{args.algorithm} {args.files}".encode())
+
+#Sending data over the socket
+
+data_packet = [args.algorithm]
+for items in args.files:
+    data_packet.append(items)
+print(data_packet)
+
+pain = str(data_packet)
+pain = pain.encode()
+
+s.sendall(pain)
 
 with open('clientside_file', 'wb') as f:
     print(f'Connecting to {args.ip}:{port}')
@@ -43,8 +56,7 @@ with open('clientside_file', 'wb') as f:
         if not data:
             break
         f.write(data)
-
-f.close()
+    f.close()
 s.close()
 
 with open('clientside_file', 'r') as fin:
